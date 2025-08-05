@@ -4,11 +4,47 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-generator client {
-  provider = "prisma-client-js"
-}
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String             @id @default(auto()) @map("_id") @db.ObjectId
+  name              String
+  email             String             @unique
+  password         String
+  avatarUrl         String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  createdGroups     Group[]            @relation("GroupCreator")
+  memberOfGroups    Group[]            @relation("GroupMembers", fields: [groupIds], references: [id])
+  groupIds          String[]           @db.ObjectId
+  joinRequests      JoinRequest[]      @relation("UserJoinRequests")
+}
+
+model Group {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  subject      String
+  description  String?
+  code         String        @unique
+  creatorId    String        @db.ObjectId
+  creator      User          @relation("GroupCreator", fields: [creatorId], references: [id])
+  members      User[]        @relation("GroupMembers", fields: [memberIds], references: [id])
+  memberIds    String[]      @db.ObjectId
+  joinRequests JoinRequest[] @relation("GroupJoinRequests")
+  createdAt    DateTime      @default(now())
+}
+
+model JoinRequest {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  groupId   String   @db.ObjectId
+  createdAt DateTime @default(now())
+  user      User     @relation("UserJoinRequests", fields: [userId], references: [id], onDelete: Cascade)
+  group     Group    @relation("GroupJoinRequests", fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, groupId])
 }
