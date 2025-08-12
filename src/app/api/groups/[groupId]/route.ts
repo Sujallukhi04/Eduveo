@@ -14,14 +14,18 @@ export async function GET(req: Request, { params }: { params: { groupId: string 
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
+    // This query now correctly fetches the group AND its messages in one go.
     const group = await db.group.findFirst({
       where: {
         id: params.groupId,
-        memberIds: { has: session.user.id }, // Security: User must be a member to view
+        memberIds: { has: session.user.id }, // Security check
       },
       include: {
-        members: {
-          select: { id: true, name: true, email: true }
+        members: { select: { id: true, name: true, email: true } },
+        messages: { 
+          include: { user: { select: { id: true, name: true, avatarUrl: true } } },
+          orderBy: { createdAt: 'asc' },
+          take: 50,
         }
       }
     });
