@@ -18,6 +18,15 @@ interface Message {
   createdAt: Date;
   user: { id: string; name: string | null; avatarUrl?: string | null; };
 }
+interface FileData {
+  id: string;
+  name: string;
+  url: string;
+  fileType: string;
+  size: number;
+  createdAt: Date;
+  user: { id: string; name: string | null; avatarUrl?: string | null; };
+}
 interface GroupDetails {
   id: string;
   name: string;
@@ -26,6 +35,7 @@ interface GroupDetails {
   pinnedMessageId: string | null;
   members: Member[];
   messages: Message[];
+  files: FileData[]; 
 }
 
 const GroupSidebar = ({ group, isOwner, handleDeleteOrLeave }: { group: GroupDetails, isOwner: boolean, handleDeleteOrLeave: () => void }) => (
@@ -167,6 +177,7 @@ export default function ViewGroupPage() {
         </div>
         <Chat
           initialMessages={group.messages}
+          initialFiles={group.files}
           initialPinnedMessage={pinnedMessage}
           groupId={group.id}
           currentUser={{

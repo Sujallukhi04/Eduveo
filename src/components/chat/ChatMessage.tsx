@@ -25,15 +25,9 @@ interface ChatMessageProps {
 export default function ChatMessage({ message, currentUser, isGroupOwner, onPinMessage }: ChatMessageProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const isAuthor = message.user.id === currentUser.id;
-  
-  // A member can delete their own message.
-  const canDelete = isAuthor;
-  // Only the group owner can pin any message.
+  const canDelete = isGroupOwner || isAuthor;
   const canPin = isGroupOwner;
-  // The owner can delete ANY message.
-  const ownerCanDelete = isGroupOwner;
-
-  const canShowMenu = isGroupOwner || isAuthor;
+  const canShowMenu = canDelete || canPin;
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -69,7 +63,7 @@ export default function ChatMessage({ message, currentUser, isGroupOwner, onPinM
                   <span>Pin Message</span>
                 </DropdownMenuItem>
               )}
-              {(canDelete || ownerCanDelete) && (
+              {canDelete && (
                  <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-500">

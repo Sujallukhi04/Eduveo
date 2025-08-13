@@ -34,7 +34,6 @@ export async function POST(req: Request) {
       },
     });
 
-    // Publish the message to Ably after saving it.
     const ably = new Ably.Rest(process.env.ABLY_API_KEY!);
     const channel = ably.channels.get(`group:${groupId}`);
     await channel.publish('new-message', newMessage);
