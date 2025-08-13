@@ -8,7 +8,7 @@ import { z } from "zod";
 export const runtime = 'nodejs';
 
 const pinMessageSchema = z.object({
-  messageId: z.string().nullable(), 
+  messageId: z.string().nullable(),
 });
 
 export async function POST(
@@ -28,7 +28,6 @@ export async function POST(
       where: { id: groupId },
     });
 
-    // Security Check: Only the group owner can pin messages.
     if (!group || group.creatorId !== userId) {
       return NextResponse.json({ message: "Forbidden: Only the group owner can pin messages." }, { status: 403 });
     }
@@ -41,7 +40,6 @@ export async function POST(
       data: { pinnedMessageId: messageId },
     });
     
-    // Fetch the full message details to broadcast to all clients
     const pinnedMessage = messageId 
       ? await db.message.findUnique({ where: { id: messageId }, include: { user: true } }) 
       : null;

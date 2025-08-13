@@ -13,19 +13,23 @@ export async function GET(req: Request, { params }: { params: { groupId: string 
     if (!session?.user?.id) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
+    
+    const { groupId } = params;
 
-    // This query now correctly fetches the group AND its messages in one go.
     const group = await db.group.findFirst({
       where: {
-        id: params.groupId,
-        memberIds: { has: session.user.id }, // Security check
+        id: groupId,
+        memberIds: { has: session.user.id },
       },
       include: {
         members: { select: { id: true, name: true, email: true } },
-        messages: { 
+        messages: {
           include: { user: { select: { id: true, name: true, avatarUrl: true } } },
           orderBy: { createdAt: 'asc' },
-          take: 50,
+        },
+        files: {
+          include: { user: { select: { id: true, name: true, avatarUrl: true } } },
+          orderBy: { createdAt: 'asc' },
         }
       }
     });

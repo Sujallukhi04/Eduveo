@@ -21,7 +21,7 @@ export async function DELETE(
 
     const message = await db.message.findUnique({
       where: { id: messageId },
-      include: { group: true }, // We need the group to check who the owner is
+      include: { group: true },
     });
 
     if (!message) {
@@ -31,12 +31,10 @@ export async function DELETE(
     const isGroupOwner = message.group.creatorId === userId;
     const isMessageAuthor = message.userId === userId;
 
-    // A user can delete a message if they are the group owner OR if they are the author of that specific message.
     if (!isGroupOwner && !isMessageAuthor) {
-      return NextResponse.json({ message: "Forbidden: You do not have permission to delete this message." }, { status: 403 });
+      return NextResponse.json({ message: "Forbidden: You cannot delete this message." }, { status: 403 });
     }
 
-    // If the check passes, delete the message.
     await db.message.delete({
       where: { id: messageId },
     });
