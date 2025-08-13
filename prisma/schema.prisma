@@ -47,6 +47,7 @@ model Group {
   files        File[]
   boards       Board[]
   userFavorite UserFavorite[]
+  pinnedMessageId String?
 }
 
 model JoinRequest {

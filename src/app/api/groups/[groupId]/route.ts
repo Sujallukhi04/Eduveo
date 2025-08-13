@@ -81,41 +81,47 @@ export async function PATCH(req: Request, { params }: { params: { groupId: strin
 }
 
 // --- DELETE Method to delete/leave group ---
-export async function DELETE(req: Request, { params }: { params: { groupId: string } }) {
+export async function DELETE(
+  req: Request,
+  { params }: { params: { groupId: string } }
+) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     const userId = session.user.id;
+    const { groupId } = params;
 
     const group = await db.group.findUnique({
-      where: { id: params.groupId },
+      where: { id: groupId },
     });
 
     if (!group) {
       return NextResponse.json({ message: "Group not found" }, { status: 404 });
     }
 
+    // SCENARIO 1: The user is the owner. Delete the entire group.
+    // The `onDelete: Cascade` in your Prisma schema will automatically delete all related messages, files, etc.
     if (group.creatorId === userId) {
       await db.group.delete({
-        where: { id: params.groupId },
+        where: { id: groupId },
       });
-      return NextResponse.json({ message: "Group successfully deleted." }, { status: 200 });
+      return NextResponse.json({ message: "Group has been successfully deleted." }, { status: 200 });
     } 
-
+    // SCENARIO 2: The user is a member (but not the owner). Remove them from the group.
     else if (group.memberIds.includes(userId)) {
       await db.group.update({
-        where: { id: params.groupId },
+        where: { id: groupId },
         data: {
           members: {
-            disconnect: { id: userId },
+            disconnect: { id: userId }, // This correctly removes the user from the `members` relation
           },
         },
       });
       return NextResponse.json({ message: "You have successfully left the group." }, { status: 200 });
     } 
-
+    // SCENARIO 3: The user is not a member and has no right to perform this action.
     else {
       return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
