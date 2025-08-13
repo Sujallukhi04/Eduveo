@@ -96,7 +96,7 @@ export default function ChatMessage({ message, currentUser, isGroupOwner, onPinM
           </span>
         </div>
         <span className="text-xs text-gray-500">
-          {message.user.name} - {format(new Date(message.createdAt), 'p')}
+          {message.user.name} - {format(new Date(message.createdAt), 'PP p')}
         </span>
       </div>
     </div>
