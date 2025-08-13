@@ -1,10 +1,3 @@
-/*
-======================================================================
-File Location: /app/api/messages/[messageId]/route.ts (UPDATED)
-Description: This version has the definitive, correct security logic
-for deleting messages as per your request.
-======================================================================
-*/
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import {db} from "@/lib/db";
@@ -38,7 +31,6 @@ export async function DELETE(
     const isGroupOwner = message.group.creatorId === userId;
     const isMessageAuthor = message.userId === userId;
 
-    // DEFINITIVE SECURITY FIX:
     // A user can delete a message if they are the group owner OR if they are the author of that specific message.
     if (!isGroupOwner && !isMessageAuthor) {
       return NextResponse.json({ message: "Forbidden: You do not have permission to delete this message." }, { status: 403 });
@@ -49,7 +41,6 @@ export async function DELETE(
       where: { id: messageId },
     });
 
-    // Notify all clients in the group that this message has been deleted.
     const ably = new Ably.Rest(process.env.ABLY_API_KEY!);
     const channel = ably.channels.get(`group:${message.groupId}`);
     await channel.publish('message-deleted', { messageId });

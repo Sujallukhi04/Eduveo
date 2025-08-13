@@ -1,10 +1,3 @@
-/*
-======================================================================
-File Location: /components/chat/Chat.tsx (UPDATED FILE)
-Description: The main chat component is updated to handle the new events
-and render the pinned message bar.
-======================================================================
-*/
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -15,7 +8,6 @@ import { Input } from '@/components/ui/input';
 import { Send, Pin, X } from 'lucide-react';
 import ChatMessage from './ChatMessage';
 
-// Define types
 interface User {
   id: string;
   name: string | null;
