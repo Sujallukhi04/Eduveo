@@ -1,9 +1,3 @@
-/*
-======================================================================
-File Location: /app/api/groups/[groupId]/pin/route.ts (NEW FILE)
-Description: This route handles pinning or unpinning a message for a group.
-======================================================================
-*/
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import {db} from "@/lib/db";
@@ -14,7 +8,7 @@ import { z } from "zod";
 export const runtime = 'nodejs';
 
 const pinMessageSchema = z.object({
-  messageId: z.string().nullable(), // Allow null for unpinning
+  messageId: z.string().nullable(), 
 });
 
 export async function POST(
@@ -42,7 +36,6 @@ export async function POST(
     const body = await req.json();
     const { messageId } = pinMessageSchema.parse(body);
 
-    // Update the group with the new pinned message ID
     await db.group.update({
       where: { id: groupId },
       data: { pinnedMessageId: messageId },
@@ -53,7 +46,6 @@ export async function POST(
       ? await db.message.findUnique({ where: { id: messageId }, include: { user: true } }) 
       : null;
 
-    // Publish a real-time event to update the pinned message for everyone
     const ably = new Ably.Rest(process.env.ABLY_API_KEY!);
     const channel = ably.channels.get(`group:${groupId}`);
     await channel.publish('message-pinned', { pinnedMessage });

@@ -1,10 +1,3 @@
-/*
-======================================================================
-File Location: /components/chat/ChatMessage.tsx (DEFINITIVE FIX)
-Description: The logic for showing the "three dots" menu is now 100%
-correct based on your requirements.
-======================================================================
-*/
 'use client';
 
 import { useState } from 'react';
@@ -15,7 +8,6 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
-// Define types
 interface User { id: string; name: string | null; image?: string | null; }
 interface Message {
   id: string;
@@ -41,9 +33,6 @@ export default function ChatMessage({ message, currentUser, isGroupOwner, onPinM
   // The owner can delete ANY message.
   const ownerCanDelete = isGroupOwner;
 
-  // DEFINITIVE FIX: The menu should only be shown if the user has at least one action they can perform on THIS message.
-  // - An owner can always see the menu (to pin or delete).
-  // - A member can only see the menu on their OWN message (to delete it).
   const canShowMenu = isGroupOwner || isAuthor;
 
   const handleDelete = async () => {

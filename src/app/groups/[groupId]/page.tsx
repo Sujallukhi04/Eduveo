@@ -1,10 +1,3 @@
-/*
-======================================================================
-File Location: /app/groups/[groupId]/page.tsx (UPDATED)
-Description: The `handleDeleteOrLeave` function is now fully implemented
-to call the backend API and handle the response.
-======================================================================
-*/
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -18,7 +11,6 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import Chat from '@/components/chat/Chat';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
-// Define types
 interface Member { id: string; name: string; email: string; }
 interface Message {
   id: string;
@@ -36,7 +28,6 @@ interface GroupDetails {
   messages: Message[];
 }
 
-// Sidebar Component
 const GroupSidebar = ({ group, isOwner, handleDeleteOrLeave }: { group: GroupDetails, isOwner: boolean, handleDeleteOrLeave: () => void }) => (
   <aside className="w-full md:w-80 flex-shrink-0 bg-white dark:bg-gray-800 border-r dark:border-gray-700 flex flex-col h-full">
     <div className="p-4 border-b dark:border-gray-700">
@@ -130,7 +121,6 @@ export default function ViewGroupPage() {
     }
   }, [status, groupId, router]);
 
-  // DEFINITIVE FIX: This function now calls the backend API
   const handleDeleteOrLeave = async () => {
     try {
       const response = await fetch(`/api/groups/${groupId}`, {
