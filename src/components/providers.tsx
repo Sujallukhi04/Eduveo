@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import { SessionProvider } from 'next-auth/react';
-import React from 'react';
+import { SessionProvider } from "next-auth/react";
+import { ThemeProvider } from "next-themes";
+import React from "react";
 
 // Define the props for our provider component
 interface ProvidersProps {
@@ -11,8 +12,11 @@ interface ProvidersProps {
 // Create the Providers component
 const Providers = ({ children }: ProvidersProps) => {
   // Wrap the children with the SessionProvider from next-auth
-  return <SessionProvider>{children}</SessionProvider>;
+  return (
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+      <SessionProvider>{children}</SessionProvider>
+    </ThemeProvider>
+  );
 };
 
 export default Providers;
-
