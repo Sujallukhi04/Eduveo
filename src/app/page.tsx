@@ -15,11 +15,13 @@ import {
   Phone,
   PenTool,
   Clock,
-  BookOpen,
+  // BookOpen,
+  // BookCheck,
 } from "lucide-react";
 import { DarkVeilBackground } from "@/components/dark-veil-background";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Home() {
   const router = useRouter();
@@ -41,11 +43,18 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                <BookOpen className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <span className="text-xl font-bold text-foreground">
-                StudySync
+              {/* <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center"> */}
+                {/* <BookCheck className="h-5 w-5 text-primary-foreground" /> */}
+                <Image
+                  className="h-10 w-12 text-primary-foreground"
+                  src="/images/logo.png"
+                  alt="Eduveo Logo"
+                  width={20}
+                  height={20}
+                />  
+              {/* </div> */}
+              <span className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+                Eduveo
               </span>
             </div>
 
