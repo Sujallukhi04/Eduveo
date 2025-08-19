@@ -1,19 +1,22 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import {db} from "@/lib/db";
+import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-export const runtime = 'nodejs';
+export const runtime = "nodejs";
 
 // --- GET Method to fetch single group details ---
-export async function GET(req: Request, { params }: { params: { groupId: string } }) {
+export async function GET(
+  req: Request,
+  { params }: { params: { groupId: string } }
+) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    
+
     const { groupId } = params;
 
     const group = await db.group.findFirst({
@@ -24,34 +27,46 @@ export async function GET(req: Request, { params }: { params: { groupId: string 
       include: {
         members: { select: { id: true, name: true, email: true } },
         messages: {
-          include: { user: { select: { id: true, name: true, avatarUrl: true } } },
-          orderBy: { createdAt: 'asc' },
+          include: {
+            user: { select: { id: true, name: true, avatarUrl: true } },
+          },
+          orderBy: { createdAt: "asc" },
         },
         files: {
-          include: { user: { select: { id: true, name: true, avatarUrl: true } } },
-          orderBy: { createdAt: 'asc' },
-        }
-      }
+          include: {
+            user: { select: { id: true, name: true, avatarUrl: true } },
+          },
+          orderBy: { createdAt: "asc" },
+        },
+      },
     });
-
-    if (!group) {
-      return NextResponse.json({ message: "Group not found or access denied" }, { status: 404 });
-    }
 
     return NextResponse.json(group, { status: 200 });
   } catch (error) {
     console.error("[GET GROUP DETAILS ERROR]", error);
-    return NextResponse.json({ message: "Failed to fetch group details" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Failed to fetch group details" },
+      { status: 500 }
+    );
   }
 }
 
 // --- PATCH Method to update group ---
 const updateGroupSchema = z.object({
-  name: z.string().min(3, "Group name must be at least 3 characters").optional(),
-  subject: z.string().min(3, "Subject must be at least 3 characters").optional(),
+  name: z
+    .string()
+    .min(3, "Group name must be at least 3 characters")
+    .optional(),
+  subject: z
+    .string()
+    .min(3, "Subject must be at least 3 characters")
+    .optional(),
 });
 
-export async function PATCH(req: Request, { params }: { params: { groupId: string } }) {
+export async function PATCH(
+  req: Request,
+  { params }: { params: { groupId: string } }
+) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
@@ -77,10 +92,16 @@ export async function PATCH(req: Request, { params }: { params: { groupId: strin
     return NextResponse.json(updatedGroup, { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ message: error.issues[0].message }, { status: 400 });
+      return NextResponse.json(
+        { message: error.issues[0].message },
+        { status: 400 }
+      );
     }
     console.error("[UPDATE GROUP ERROR]", error);
-    return NextResponse.json({ message: "Failed to update group" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Failed to update group" },
+      { status: 500 }
+    );
   }
 }
 
@@ -109,20 +130,24 @@ export async function DELETE(
       await db.group.delete({
         where: { id: groupId },
       });
-      return NextResponse.json({ message: "Group has been successfully deleted." }, { status: 200 });
-    } 
-    else if (group.memberIds.includes(userId)) {
+      return NextResponse.json(
+        { message: "Group has been successfully deleted." },
+        { status: 200 }
+      );
+    } else if (group.memberIds.includes(userId)) {
       await db.group.update({
         where: { id: groupId },
         data: {
           members: {
-            disconnect: { id: userId }, 
+            disconnect: { id: userId },
           },
         },
       });
-      return NextResponse.json({ message: "You have successfully left the group." }, { status: 200 });
-    } 
-    else {
+      return NextResponse.json(
+        { message: "You have successfully left the group." },
+        { status: 200 }
+      );
+    } else {
       return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
   } catch (error) {

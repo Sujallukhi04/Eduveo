@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import Chat from "@/components/chat/Chat";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ModernLoader } from "@/components/ModernLoader";
 
 interface Member {
   id: string;
@@ -193,11 +194,7 @@ export default function ViewGroupPage() {
   };
 
   if (isLoading || !group || !session) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        Loading group...
-      </div>
-    );
+    return <ModernLoader />;
   }
 
   const isOwner = session.user.id === group.creatorId;

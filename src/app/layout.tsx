@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         {/* Wrap your entire application with the Providers component */}
         <Providers>{children}</Providers>
-        <Toaster richColors position="top-right" />
+        <Toaster richColors position="bottom-right" />
       </body>
     </html>
   );
