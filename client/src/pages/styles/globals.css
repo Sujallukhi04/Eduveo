@@ -1,0 +1,21 @@
+/* Add these styles */
+.dialog-overlay {
+  z-index: 50;
+}
+
+.dialog-content {
+  z-index: 51;
+}
+
+.scroll-area-viewport {
+  overflow-y: auto !important;
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+} 
