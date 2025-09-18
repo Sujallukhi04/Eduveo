@@ -1,0 +1,115 @@
+.cursorOuter,
+.cursorInner,
+.cursorTrail {
+  pointer-events: none;
+  position: fixed;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.cursorOuter {
+  width: 40px;
+  height: 40px;
+  border: 2px solid hsl(var(--primary) / 0.7);
+  border-radius: 50%;
+  mix-blend-mode: difference;
+}
+
+.cursorInner {
+  width: 8px;
+  height: 8px;
+  background-color: hsl(var(--primary));
+  border-radius: 50%;
+}
+
+.cursorTrail {
+  width: 20px;
+  height: 20px;
+  background-color: hsl(var(--primary) / 0.3);
+  border-radius: 50%;
+  opacity: 0.5;
+  transition: all 0.1s ease;
+}
+
+/* Click animation states */
+.cursorOuter.clicking {
+  width: 35px;
+  height: 35px;
+  border-color: hsl(var(--primary) / 0.9);
+}
+
+.cursorInner.clicking {
+  width: 12px;
+  height: 12px;
+  background-color: hsl(var(--primary));
+}
+
+.cursorTrail.clicking {
+  width: 30px;
+  height: 30px;
+  opacity: 0.8;
+}
+
+/* Hover animation states */
+.cursorOuter.hovering {
+  width: 50px;
+  height: 50px;
+  border-color: hsl(var(--primary));
+  background-color: hsl(var(--primary) / 0.1);
+}
+
+.cursorInner.hovering {
+  width: 4px;
+  height: 4px;
+  background-color: hsl(var(--primary));
+}
+
+.cursorTrail.hovering {
+  width: 40px;
+  height: 40px;
+  opacity: 0.3;
+}
+
+/* Hide cursor on touch devices */
+@media (hover: none) {
+  .cursorOuter,
+  .cursorInner,
+  .cursorTrail {
+    display: none;
+  }
+}
+
+/* Animation keyframes */
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.cursorOuter {
+  animation: pulse 2s ease-in-out infinite, rotate 8s linear infinite;
+}
+
+.cursorOuter.hovering {
+  animation: rotate 4s linear infinite;
+}
+
