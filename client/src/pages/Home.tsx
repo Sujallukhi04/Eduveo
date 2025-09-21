@@ -33,7 +33,7 @@ function Home() {
   // const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
   const navigate = useNavigate();
-  const { user, isLoading, isAuthenticated,login } = useAuth();
+  const { user, isLoading, isAuthenticated, login } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -64,7 +64,11 @@ function Home() {
                   platform.
                 </p>
                 <div className="flex flex-col gap-4 sm:flex-row justify-center">
-                  <Button size="lg" className="text-lg" onClick={login}>
+                  <Button
+                    size="lg"
+                    className="text-lg"
+                    onClick={() => navigate("/login")}
+                  >
                     Get Started
                   </Button>
                   <Button size="lg" variant="outline" className="text-lg">
@@ -167,7 +171,7 @@ function Home() {
             </div>
           </div>
         </section>
-        <DeveloperSection />
+        {/* <DeveloperSection /> */}
       </div>
     </>
   );

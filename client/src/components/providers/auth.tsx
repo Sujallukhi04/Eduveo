@@ -1,6 +1,7 @@
 // src/contexts/auth.tsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { toast } from "sonner";
 
 interface User {
   email: string;
@@ -18,7 +19,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  login: () => void;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<void>;
   signup: (userData: SignupData) => Promise<void>;
@@ -59,8 +60,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const login = () => {
-    window.location.href = `${API_URL}/auth/google`;
+  const login = async (email: string, password: string) => {
+    try {
+      setIsLoading(true);
+
+      const response = await axios.post(
+        `${API_URL}/auth/login`,
+        { email, password },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setUser(response.data.user);
+      toast.success("Logged in successfully!");
+    } catch (error: any) {
+      setUser(null);
+      toast.error(
+        error.response?.data?.message || "Login failed. Please try again."
+      );
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const logout = async () => {

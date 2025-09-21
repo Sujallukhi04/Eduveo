@@ -14,9 +14,10 @@ import { Toaster } from "sonner";
 import "./style.css";
 import { Board } from "./components/main-board/Board.tsx";
 import Signup from "./pages/Signup.tsx";
+import Login from "./pages/Login.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       {/* custom cursor */}
       {/* <CustomCursor /> */}
       <AuthProvider>
@@ -25,13 +26,14 @@ createRoot(document.getElementById("root")!).render(
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
               <Route
                 path="/groups"
                 element={
                   <ProtectedRoute>
                     <RegisterServiceWorker />
                     <GroupsPage />
-                  </ProtectedRoute> 
+                  </ProtectedRoute>
                 }
               />
               <Route
@@ -47,7 +49,7 @@ createRoot(document.getElementById("root")!).render(
                 path="/groups/:groupId/board/:boardId"
                 element={
                   <ProtectedRoute>
-                    <RegisterServiceWorker/>
+                    <RegisterServiceWorker />
                     <Board />
                   </ProtectedRoute>
                 }
@@ -58,13 +60,7 @@ createRoot(document.getElementById("root")!).render(
           </BrowserRouter>
         </SessionProvider>
       </AuthProvider>
-      <Toaster
-        toastOptions={{
-          duration: 4000,
-          closeButton: true,
-        }}
-        richColors
-      />
+      <Toaster richColors theme="dark" />
     </ThemeProvider>
   </StrictMode>
 );

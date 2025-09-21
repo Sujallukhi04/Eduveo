@@ -14,7 +14,6 @@ import {
 import { Bell, Loader2, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ModeToggle } from "./mode-toggle";
 import { useAuth } from "./providers/auth";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Switch } from "./ui/switch";
@@ -97,9 +96,6 @@ const Navbar = () => {
 
         {/* Action Buttons */}
         <div className="flex items-center space-x-3 md:order-2 md:space-x-4 rtl:space-x-reverse mr-2">
-          <div className="hidden md:block lg:block">
-            <ModeToggle />
-          </div>
           <DropdownMenu>
             <DropdownMenuTrigger className="focus:outline-none">
               {user ? (
