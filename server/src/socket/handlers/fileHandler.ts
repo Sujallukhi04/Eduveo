@@ -970,6 +970,17 @@ export const handleFileEvents = (io: Server, socket: Socket) => {
   // Handle file upload
   socket.on("uploadFile", async (data: UploadData) => {
     try {
+      // Ensure userId is provided or use the one stored in socket
+      if (!data.userId && socket.data.userId) {
+        data.userId = socket.data.userId;
+      }
+      
+      // Verify userId is available
+      if (!data.userId) {
+        throw new Error("User authentication required for file upload");
+      }
+      
+      console.log("File upload started with userId:", data.userId);
       socket.emit("uploadProgress", { progress: 0 });
 
       const fileDoc = await handleFileUpload(io, socket, data);

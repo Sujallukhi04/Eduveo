@@ -365,10 +365,17 @@ const ChatRoom = ({ groupId }: { groupId: string }) => {
   };
 
   useEffect(() => {
-    const newSocket = io("http://localhost:3000");
+    // Connect to socket with auth credentials
+    const newSocket = io(
+      import.meta.env.VITE_API_URL || "http://localhost:5000",
+      {
+        withCredentials: true, // This sends cookies with the request
+      }
+    );
     setSocket(newSocket);
 
-    newSocket.emit("joinGroup", groupId);
+    // Join the group and identify the user
+    newSocket.emit("joinGroup", { groupId, userId });
     fetchMessages();
 
     // Check if there's an ongoing call in this group

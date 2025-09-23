@@ -13,9 +13,15 @@ cloudinary.config({
 
 export const handleChatEvents = (io: Server, socket: Socket) => {
   // Handle joining chat groups
-  socket.on("joinGroup", (groupId) => {
+  socket.on("joinGroup", (data) => {
+    const { groupId, userId } = typeof data === 'object' ? data : { groupId: data, userId: null };
+    
     socket.join(groupId);
-    console.log(`User ${socket.id} joined group ${groupId}`);
+    // Store userId in socket data for authentication
+    if (userId) {
+      socket.data.userId = userId;
+    }
+    console.log(`User ${userId || socket.id} joined group ${groupId}`);
   });
 
   // Handle leaving chat groups

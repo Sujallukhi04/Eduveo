@@ -83,7 +83,7 @@ export function Room({ children, fallback }: RoomProps) {
   const { boardId: roomId } = useParams();
   console.log("roomID", roomId);
   const { setTheme } = useTheme();
-  setTheme("dark");
+  setTheme("light");
 
   return (
     <LiveblocksProvider

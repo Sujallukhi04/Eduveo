@@ -89,7 +89,7 @@ const Navbar = () => {
           <Link to="/" className="flex items-center">
             <Logo className="h-11 w-11 pt-2" />
             <span className="self-center whitespace-nowrap text-3xl font-semibold dark:text-white">
-              study<span className="text-primary">wise</span>
+              Eduveo
             </span>
           </Link>
         </div>
