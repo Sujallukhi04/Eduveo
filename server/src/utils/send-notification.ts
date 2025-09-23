@@ -3,7 +3,7 @@ import webpush from "web-push";
 
 // Configure web-push with your VAPID keys
 webpush.setVapidDetails(
-  "mailto:studywise.app.contact@gmail.com",
+  "mailto:vandankambodi17@gmail.com",
   process.env.PUBLIC_VAPID_KEY!,
   process.env.VAPID_PRIVATE_KEY!
 );
