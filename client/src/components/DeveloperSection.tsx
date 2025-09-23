@@ -22,32 +22,32 @@ interface Developer {
 
 const developers: Developer[] = [
   {
-    name: "Ayush Kalathiya",
+    name: "Vandan Kambodi",
     role: "Full Stack Developer",
     bio: "Expert in Next.js, PostgreSQL, and Node.js development. Passionate about creating intuitive user interfaces backed by robust server architectures.",
-    email: "ayushkalathiya50@gmail.com",
-    linkedin: "https://www.linkedin.com/in/ayush-kalathiya-750497254",
-    twitter: "https://x.com/AyushKalathiya9",
-    github: "https://github.com/Ayushkalathiya",
+    email: "23it042@charusat.edu.in",
+    linkedin: "https://www.linkedin.com/in/vandankambodi/",
+    twitter: "#",
+    github: "https://github.com/VandanKambodi",
   },
   {
-    name: "Dhruv Kotadiya",
+    name: "Sujal Lukhi",
     role: "Full Stack Developer",
     bio: "Expert in Next.js, PostgreSQL, and Node.js development. Focuses on creating scalable database solutions and responsive web applications.",
-    email: "dhruvkotadiya0235@gmail.com",
-    linkedin: "https://www.linkedin.com/in/dhruv-kotadiya-86b2212ba",
-    twitter: "https://x.com/DhruvKotad72384",
-    github: "https://github.com/DhruvK007",
+    email: "23it052@charusat.edu.in",
+    linkedin: "https://www.linkedin.com/in/sujal-lukhi-95980b284/",
+    twitter: "#",
+    github: "https://github.com/SujalLukhi04",
   },
-  {
-    name: "Sarthak Mayani",
-    role: "Full Stack Developer",
-    bio: "Expert in Next.js, PostgreSQL, and Node.js development. Dedicated to building efficient solutions and exploring new technologies.",
-    email: "mayanisarthak@gmail.com",
-    linkedin: "https://www.linkedin.com/in/sarthak-mayani-5250b1286",
-    twitter: "https://x.com/SarthakMayani",
-    github: "https://github.com/MACOOF",
-  },
+  // {
+  //   name: "Sarthak Mayani",
+  //   role: "Full Stack Developer",
+  //   bio: "Expert in Next.js, PostgreSQL, and Node.js development. Dedicated to building efficient solutions and exploring new technologies.",
+  //   email: "mayanisarthak@gmail.com",
+  //   linkedin: "https://www.linkedin.com/in/sarthak-mayani-5250b1286",
+  //   twitter: "https://x.com/SarthakMayani",
+  //   github: "https://github.com/MACOOF",
+  // },
 ];
 
 const TwitterIcon = () => (
