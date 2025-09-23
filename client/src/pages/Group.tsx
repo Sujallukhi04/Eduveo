@@ -40,7 +40,7 @@ export default function GroupsPage() {
       } catch (error) {
         console.error("Error fetching groups:", error);
         setError("Failed to load groups. Please try again later.");
-      } finally { 
+      } finally {
         setIsLoading(false);
       }
     };
@@ -79,7 +79,7 @@ export default function GroupsPage() {
             <BookOpen className="mx-auto h-16 w-16 text-primary mb-6" />
           </motion.div>
           <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-            Welcome to StudyWise
+            Welcome to Eduveo
           </h2>
           <p className="text-muted-foreground text-lg">
             Your Gateway to Collaborative Learning
@@ -123,7 +123,7 @@ export default function GroupsPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400 bg-clip-text text-transparent"
           >
-            Welcome to StudyWise Hub
+            Welcome to Eduveo Hub
           </motion.h1>
           <p className="text-xl text-muted-foreground">
             Collaborate, Learn, and Grow Together
@@ -205,7 +205,6 @@ export default function GroupsPage() {
                 className="pl-10 w-full bg-background/50 backdrop-blur-sm"
               />
             </div>
-
           </div>
 
           {/* Tab Navigation */}

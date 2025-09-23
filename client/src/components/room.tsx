@@ -24,11 +24,11 @@
 //   const { setTheme } = useTheme();
 //   setTheme("light");
 //   return (
-//     <LiveblocksProvider 
+//     <LiveblocksProvider
 //       authEndpoint=
 //         {async (room) => {
 //           try{
-//             const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/liveblocks-auth`, 
+//             const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/liveblocks-auth`,
 //               { room },
 //               {withCredentials:true}
 //             )
@@ -79,38 +79,37 @@ interface RoomProps {
   fallback: NonNullable<ReactNode> | null;
 }
 
-export function Room({
-  children,
-  fallback
-}: RoomProps) {
+export function Room({ children, fallback }: RoomProps) {
   const { boardId: roomId } = useParams();
   console.log("roomID", roomId);
   const { setTheme } = useTheme();
-  setTheme("light");
-  
+  setTheme("dark");
+
   return (
     <LiveblocksProvider
       authEndpoint={async (room) => {
         try {
-          const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/liveblocks-auth`,
+          const response = await axios.post(
+            `${import.meta.env.VITE_API_URL}/api/liveblocks-auth`,
             { room },
             { withCredentials: true }
-          )
-          console.log("Responce liveblocks: ", { response })
+          );
+          console.log("Responce liveblocks: ", { response });
           return response.data;
         } catch (error) {
           console.error("Liveblocks auth error:", error);
           throw error; // Make sure errors are properly thrown
         }
       }}
-      throttle={20}>
-      <RoomProvider 
-        id={roomId as string} 
+      throttle={20}
+    >
+      <RoomProvider
+        id={roomId as string}
         initialPresence={{
           cursor: null,
           selection: [],
           pencilDraft: null,
-          penColor: null
+          penColor: null,
         }}
         initialStorage={{
           layers: new LiveMap<string, LiveObject<Layer>>(),

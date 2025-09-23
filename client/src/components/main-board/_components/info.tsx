@@ -10,29 +10,23 @@ import { Menu } from "lucide-react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 
-interface InfoProps{
-  boardId:string;
-};
-
-const TabSeparator = () => {
-  return (
-    <div className="text-neutral-200 px-1.5">
-      |
-    </div>
-  )
+interface InfoProps {
+  boardId: string;
 }
 
-export const Info = ({
-  boardId,
-}:InfoProps) => {
-  const {onOpen} = useRenameModal();  
-  const {groupId} =useParams();
-  const {board:data} = useBoardById();
+const TabSeparator = () => {
+  return <div className="text-neutral-200 px-1.5">|</div>;
+};
 
-  if(!data) return <InfoSkeleton/>;
+export const Info = ({ boardId }: InfoProps) => {
+  const { onOpen } = useRenameModal();
+  const { groupId } = useParams();
+  const { board: data } = useBoardById();
+
+  if (!data) return <InfoSkeleton />;
   return (
     <div className="absolute top-2 left-2 bg-white rounded-md px-1.5 h-12 flex items-center shadow-md">
-        <Hint lable="Go to boards">
+      <Hint lable="Go to boards">
         <Link to={`/groups/${groupId}`} className="items-center text-center">
           <Button className="px-2" variant={"board"}>
             <img
@@ -41,50 +35,46 @@ export const Info = ({
               height={30}
               width={30}
               className="mt-3"
-              />
-            <span className={cn(
-              "text-black font-semibold text-xl mt-1",
-              "font-poppins"
-            )}>
-              Studywise
+            />
+            <span
+              className={cn(
+                "text-black font-semibold text-xl mt-1",
+                "font-poppins"
+              )}
+            >
+              Eduveo
             </span>
           </Button>
         </Link>
-        </Hint>
-        <TabSeparator/>
-        <Hint lable="Rename board">
-          <Button 
-            variant={"board"}
-            className="text-base font-normal px-2"
-            onClick={()=>{onOpen(data.id,data.title)}}
-            >
-            {data.title}
-        </Button>
-        </Hint>
-        <TabSeparator/>
-        <Actions 
-          id={data.id}
-          title={data.title}
-          side="bottom"
-          sideOffset={10}
+      </Hint>
+      <TabSeparator />
+      <Hint lable="Rename board">
+        <Button
+          variant={"board"}
+          className="text-base font-normal px-2"
+          onClick={() => {
+            onOpen(data.id, data.title);
+          }}
         >
-          <div>
-            <Hint lable="Main menue" side="bottom" sideOffset={10}>
-              <Button
-                variant={"board"}
-                size={"icon"}
-              >
-                <Menu />
-              </Button>
-            </Hint>
-          </div> 
-        </Actions>
-      </div>
+          {data.title}
+        </Button>
+      </Hint>
+      <TabSeparator />
+      <Actions id={data.id} title={data.title} side="bottom" sideOffset={10}>
+        <div>
+          <Hint lable="Main menue" side="bottom" sideOffset={10}>
+            <Button variant={"board"} size={"icon"}>
+              <Menu />
+            </Button>
+          </Hint>
+        </div>
+      </Actions>
+    </div>
   );
-} ;
+};
 
-export const InfoSkeleton =()=>{
+export const InfoSkeleton = () => {
   return (
-    <div className="w-[300px] absolute top-2 left-2 bg-white rounded-md px-1.5 h-12 flex items-center shadow-md"/>
+    <div className="w-[300px] absolute top-2 left-2 bg-white rounded-md px-1.5 h-12 flex items-center shadow-md" />
   );
 };
