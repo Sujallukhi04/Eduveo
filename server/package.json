@@ -12,7 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@google/generative-ai": "^0.22.0",
+    "@google/generative-ai": "^0.24.1",
     "@liveblocks/node": "^2.20.0",
     "@prisma/client": "^6.4.1",
     "@stream-io/node-sdk": "^0.4.18",

@@ -69,7 +69,7 @@ export default function DiagramGenerator() {
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("editor");
   const previewRef = useRef<HTMLDivElement>(null);
-  const [mermaid, setMermaid] = useState(null);
+  const [mermaid, setMermaid] = useState<any>(null);
   const [fullScreenPreview, setFullScreenPreview] = useState(false);
   const [diagramTheme, setDiagramTheme] = useState<
     "default" | "dark" | "base" | "forest" | "neutral" | "null"
@@ -107,32 +107,37 @@ export default function DiagramGenerator() {
     }
   }, [isDarkMode, mermaid]);
 
-  // Load Mermaid library once on component mount
+  // Load Mermaid library once on component mount (single dynamic import)
   useEffect(() => {
+    let mounted = true;
     import("mermaid")
       .then((m) => {
-        m.default.initialize({
-          startOnLoad: true,
+        if (!mounted) return;
+        const mermaidLib = m.default;
+        mermaidLib.initialize({
+          startOnLoad: false,
           theme: diagramTheme,
           securityLevel: "loose",
           flowchart: { curve: "basis" },
           darkMode: isDarkMode,
         });
-
-        //@ts-ignore
-        setMermaid(m.default);
+        setMermaid(mermaidLib);
       })
       .catch((err) => {
         console.error("Failed to load Mermaid", err);
         setError("Failed to load diagram rendering library");
       });
-  }, []);
+
+    return () => {
+      mounted = false;
+    };
+  }, []); // keep empty so it runs once
 
   // Update theme when it changes
   useEffect(() => {
     if (mermaid) {
-      (mermaid as Mermaid).initialize({
-        startOnLoad: true,
+      mermaid.initialize({
+        startOnLoad: false,
         theme: diagramTheme,
         securityLevel: "loose",
         flowchart: { curve: "basis" },
@@ -140,7 +145,7 @@ export default function DiagramGenerator() {
       });
       renderDiagram();
     }
-  }, [diagramTheme]);
+  }, [diagramTheme, isDarkMode, mermaid]);
 
   // Custom CSS for dark mode diagram preview
   const previewStyles = {
@@ -203,39 +208,6 @@ export default function DiagramGenerator() {
   // CodeMirror theme based on dark mode
   const editorTheme = isDarkMode ? vscodeDark : githubLight;
 
-  // Load Mermaid library once on component mount
-  useEffect(() => {
-    import("mermaid")
-      .then((m) => {
-        m.default.initialize({
-          startOnLoad: true,
-          theme: diagramTheme,
-          securityLevel: "loose",
-          flowchart: { curve: "basis" },
-        });
-
-        //@ts-ignore
-        setMermaid(m.default);
-      })
-      .catch((err) => {
-        console.error("Failed to load Mermaid", err);
-        setError("Failed to load diagram rendering library");
-      });
-  }, []);
-
-  // Update theme when it changes
-  useEffect(() => {
-    if (mermaid) {
-      (mermaid as Mermaid).initialize({
-        startOnLoad: true,
-        theme: diagramTheme,
-        securityLevel: "loose",
-        flowchart: { curve: "basis" },
-      });
-      renderDiagram();
-    }
-  }, [diagramTheme]);
-
   // Render diagram when mermaid code changes or when the component is visible
   useEffect(() => {
     if (mermaid && mermaidCode) {
@@ -268,28 +240,27 @@ export default function DiagramGenerator() {
     }
   }, [copied]);
 
-  const renderDiagram = () => {
+  const renderDiagram = async () => {
     if (!previewRef.current || !mermaid || !mermaidCode) return;
 
     try {
       // Clear previous diagram
       previewRef.current.innerHTML = "";
 
-      // Create a container for the diagram
-      const container = document.createElement("div");
-      container.className =
-        "mermaid h-full w-full justify-center items-center flex";
-      container.textContent = mermaidCode;
+      // Use a unique id for this render
+      const id = `mermaid-${Date.now()}`;
 
-      previewRef.current.appendChild(container);
+      // mermaid.render returns an object or a string depending on version; handle promise
+      const res = await mermaid.render(id, mermaidCode);
 
-      // Let Mermaid render the diagram
+      // If res is an object with svg property, use it; otherwise assume res is SVG string
+      const svg = res?.svg ?? res;
 
-      (mermaid as Mermaid).contentLoaded();
+      previewRef.current.innerHTML = svg;
     } catch (err) {
       console.error("Failed to render diagram", err);
       previewRef.current.innerHTML = `<div class="text-red-500">Error rendering diagram: ${
-        (err as any).message
+        (err as any)?.message ?? "unknown error"
       }</div>`;
     }
   };
@@ -304,7 +275,7 @@ export default function DiagramGenerator() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/diagram",
+        "http://localhost:5000/api/diagram",
         { prompt },
         {
           headers: {
@@ -480,7 +451,7 @@ export default function DiagramGenerator() {
         // Convert SVG to data URL
         const svgData = new XMLSerializer().serializeToString(svgElement);
         const svgBlob = new Blob([svgData], {
-          type: "image/svg+xml;charset=utf-8",
+          type: "image/svg+xml",
         });
         const url = URL.createObjectURL(svgBlob);
 
@@ -527,7 +498,7 @@ export default function DiagramGenerator() {
         // Convert SVG to data URL
         const svgData = new XMLSerializer().serializeToString(svgElement);
         const svgBlob = new Blob([svgData], {
-          type: "image/svg+xml;charset=utf-8",
+          type: "image/svg+xml",
         });
         const url = URL.createObjectURL(svgBlob);
 
@@ -589,7 +560,7 @@ export default function DiagramGenerator() {
             // Convert SVG to data URL
             const svgData = new XMLSerializer().serializeToString(svgElement);
             const svgBlob = new Blob([svgData], {
-              type: "image/svg+xml;charset=utf-8",
+              type: "image/svg+xml",
             });
             const url = URL.createObjectURL(svgBlob);
 

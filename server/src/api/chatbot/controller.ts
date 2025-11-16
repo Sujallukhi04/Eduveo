@@ -4,7 +4,7 @@ import { z } from "zod";
 import { TokenPayload } from "types";
 
 // Initialize Gemini
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 interface AuthenticatedRequest extends Request {
   user?: TokenPayload;
@@ -29,14 +29,14 @@ Avoid any non-academic or inappropriate content.`;
 //     'cheat', 'steal', 'illegal', 'drug', 'weapon', 'violence'
 //   ];
 
-//   return !nonAcademicKeywords.some(keyword => 
+//   return !nonAcademicKeywords.some(keyword =>
 //     prompt.toLowerCase().includes(keyword)
 //   );
 // };
 
 // Add this interface for chat history
 interface ChatMessage {
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
 }
 
@@ -65,10 +65,10 @@ export const generateResponse = async (
     }
 
     const { prompt } = validationResult.data;
-    
+
     // Get or initialize chat history for this user
     const userHistory = chatHistory.get(user.id) || [];
-    
+
     // Limit history to last MAX_HISTORY_LENGTH messages
     if (userHistory.length > MAX_HISTORY_LENGTH) {
       userHistory.splice(0, userHistory.length - MAX_HISTORY_LENGTH);
@@ -76,22 +76,20 @@ export const generateResponse = async (
 
     // Construct the messages array for the AI
     const messages = [
-      { role: 'assistant' as const, content: STUDY_CONTEXT },
+      { role: "assistant" as const, content: STUDY_CONTEXT },
       ...userHistory,
-      { role: 'user' as const, content: prompt }
+      { role: "user" as const, content: prompt },
     ];
 
     // Convert messages to strings for Gemini
-    const messageStrings = messages.map(msg => 
-      `${msg.role}: ${msg.content}`
-    );
+    const messageStrings = messages.map((msg) => `${msg.role}: ${msg.content}`);
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const result = await model.generateContentStream(messageStrings);
 
     console.log(`[Chatbot] User ${user.name}: ${prompt}`);
 
-    let fullResponse = '';
+    let fullResponse = "";
 
     // Modify the streaming loop to capture the full response
     for await (const chunk of result.stream) {
@@ -103,20 +101,21 @@ export const generateResponse = async (
 
     // Update chat history with both the user's message and AI's response
     userHistory.push(
-      { role: 'user', content: prompt },
-      { role: 'assistant', content: fullResponse }
+      { role: "user", content: prompt },
+      { role: "assistant", content: fullResponse }
     );
     chatHistory.set(user.id, userHistory);
 
     // Send the final message
     res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
     res.end();
-
   } catch (error) {
     console.error("[Chatbot] Error:", error);
-    res.write(`data: ${JSON.stringify({ 
-      error: error instanceof Error ? error.message : "Unknown error"
-    })}\n\n`);
+    res.write(
+      `data: ${JSON.stringify({
+        error: error instanceof Error ? error.message : "Unknown error",
+      })}\n\n`
+    );
     res.end();
   }
 };
