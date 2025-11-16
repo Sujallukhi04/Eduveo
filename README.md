@@ -1,7 +1,7 @@
-# Study Wise
+# Eduveo
 
 ## 🔄 Introduction
-Welcome to **Study Wise**, a collaborative platform designed for students to come together, share knowledge, and make learning fun and engaging. This project empowers users to create study groups, chat, share materials, conduct group audio calls, and even collaborate on a whiteboard in real time.
+Welcome to **Eduveo**, a collaborative platform designed for students to come together, share knowledge, and make learning fun and engaging. This project empowers users to create study groups, chat, share materials, conduct group audio calls, and even collaborate on a whiteboard in real time.
 
 ---
 
@@ -31,12 +31,12 @@ Welcome to **Study Wise**, a collaborative platform designed for students to com
 ## 🔄 Installation and Setup
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/studywise-Frontend.git
+    git clone https://github.com/yourusername/client.git
     ```
 
 2. Navigate to the project directory:
     ```bash
-    cd studywise-Frontend
+    cd client
     ```
 
 3. Install dependencies:
@@ -46,10 +46,10 @@ Welcome to **Study Wise**, a collaborative platform designed for students to com
 
 4. Start the development server:
     ```bash
-    npm start
+    npm run dev
     ```
 
-5. Open the app in your browser at `http://localhost:3000`
+5. Open the app in your browser at `http://localhost:5173`
 
 ---
 
@@ -63,7 +63,7 @@ Welcome to **Study Wise**, a collaborative platform designed for students to com
 ---
 
 ## 📚 Contributing
-We welcome contributions to enhance the functionality and experience of **Study Wise**. Feel free to fork the repository, create a branch, and submit a pull request.
+We welcome contributions to enhance the functionality and experience of **Eduveo**. Feel free to fork the repository, create a branch, and submit a pull request.
 
 ---
 
@@ -72,10 +72,4 @@ This project is licensed under the [MIT License](./LICENSE).
 
 ---
 
-## 💚 Acknowledgments
-- Thanks to the contributors and open-source libraries that made this project possible.
-- Special shoutout to the students who inspired this project by sharing their collaborative learning needs.
-
----
-
-Enjoy collaborating and learning with **Study Wise**! 📚
+Enjoy collaborating and learning with **Eduveo**! 📚
