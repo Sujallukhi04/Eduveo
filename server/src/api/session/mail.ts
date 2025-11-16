@@ -24,7 +24,7 @@ export const generateSessionReminderEmail = (session: SessionWithDetails) => {
     <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
         <!-- Brand Header -->
         <div style="text-align: center; padding: 30px 0; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-            <div style="font-size: 32px; font-weight: bold; margin-bottom: 10px;">📚 StudyWise</div>
+            <div style="font-size: 32px; font-weight: bold; margin-bottom: 10px;">📚 Eduveo</div>
             <h2 style="margin: 0; font-size: 24px;">Your Learning Journey Continues!</h2>
         </div>
 
@@ -81,7 +81,7 @@ export const generateSessionReminderEmail = (session: SessionWithDetails) => {
 
         <!-- Footer -->
         <div style="text-align: center; color: #64748b; font-size: 12px; padding: 20px;">
-            <p>© 2025 StudyWise • Making Learning Awesome!</p>
+            <p>© 2025 Eduveo • Making Learning Awesome!</p>
         </div>
     </div>
 </body>
